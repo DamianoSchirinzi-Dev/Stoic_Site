@@ -1,0 +1,172 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+
+html,
+body {
+  overflow: hidden;
+}
+
+.webgl {
+  position: fixed;
+  top: 0;
+  left: 0;
+  outline: none;
+}
+
+#loading-screen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: black;
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 24px;
+  z-index: 2000;
+}
+
+#panels {
+  padding-top: 100px;
+  padding-left: 20px;
+  display: flex;
+  gap: 630px;
+  justify-content: center;
+  align-items: top;
+}
+
+#intro-section {
+  color: beige;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  padding: 20px;
+  z-index: 100;
+  width: 300px;
+}
+
+#info-section {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  color: beige;
+  padding: 20px;
+  z-index: 100;
+  width: 400px;
+}
+
+#info-section button {
+  padding: 10px 20px; /* Adjust padding to your preference */
+  border: none; /* Remove default border */
+  border-radius: 12px; /* High border-radius for pill shape */
+  background-color: rgb(255, 255, 129); /* Example background color */
+  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+  color: rgb(0, 0, 0); /* Text color */
+  font-size: larger;
+  width: 200px;
+  cursor: pointer; /* Change cursor to pointer on hover */
+  text-align: center; /* Center text inside the button */
+  outline: none; /* Remove default focus outline */
+  transition: background-color 0.3s; /* Smooth transition for hover effect */
+}
+
+#info-section button:hover {
+  background-color: rgb(255, 255, 129); /* Darker shade on hover, adjust as needed */
+}
+
+#stoic-titles {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+#quotes {
+  padding-left: 10px;
+}
+
+#quotes li {
+  padding-left: 10px;
+  margin-bottom: 20px;
+  border-left: 2px solid #fdfdfd;
+  list-style: none;
+}
+
+h1,h2 {
+    color: rgb(255, 255, 129);
+}
+
+h1{
+    font-size: 40px;
+}
+
+p,li {
+    color: rgb(235, 235, 235);
+    font-size: large;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    line-height: 1.45;
+}
+
+@media screen and (max-width: 1300px) {
+  #menu-toggle {
+    position: fixed; /* Fixed position */
+    top: 5%; /* Center vertically */
+    left: 0; /* Stick to the left side of the screen */
+    z-index: 1001; /* Ensure it's above other elements */
+    transition: transform 0.3s ease;
+    padding: 10px;
+    background-color: rgb(255, 255, 129); /* Example background color */
+
+    border: none; /* Remove default border */
+    border-radius: 0px 12px 12px 0px; /* High border-radius for pill shape */
+    cursor: pointer; /* Change cursor to pointer on hover */
+    outline: none; /* Remove default focus outline */
+  }
+
+  #menu-toggle.visible {
+    transform: translateX(1119%);
+    transition: transform 0.3s ease;
+  }
+
+  #panels {
+    position: relative;
+    background-color: rgba(0, 0, 0, 0.5);
+    flex-direction: column;
+    align-items: center;
+    padding-top: 60px; /* Adjusted for smaller screens */
+    padding-left: 10px;
+    gap: 0px; /* Smaller gap for a stacked layout */
+    width: 300px;
+    transform: translateX(-100%); /* Hide off-screen */
+    transition: transform 0.3s ease; /* Smooth transition for sliding */
+  }
+
+  #panels.menu-visible {
+    transform: translateX(0); /* Reset to original position */
+  }
+
+  html,
+  body {
+    overflow-y: auto; /* Enable vertical scrolling */
+  }
+
+  #intro-section,
+  #info-section {
+    width: 90%; /* Adjust width for smaller screens */
+    /* Add any additional styling for smaller screens here */
+  }
+}
+
+@media screen and (max-width: 360px) {
+  #panels {
+    width: 240px;
+  }
+
+  #menu-toggle.visible {
+    transform: translateX(900%);
+    transition: transform 0.3s ease;
+  }
+}
