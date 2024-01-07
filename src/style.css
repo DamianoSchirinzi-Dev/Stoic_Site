@@ -88,10 +88,12 @@ body {
   text-align: center; /* Center text inside the button */
   outline: none; /* Remove default focus outline */
   transition: background-color 0.3s; /* Smooth transition for hover effect */
+  transition: all 0.3s ease;
 }
 
 #info-section button:hover {
   background-color: rgb(255, 255, 129); /* Darker shade on hover, adjust as needed */
+  transform: scale(1.05); /* Slight increase in size */
 }
 
 #stoic-titles {
@@ -105,10 +107,19 @@ body {
 }
 
 #quotes li {
-  padding-left: 10px;
+  padding: 10px;
+  border-radius: 5%;
   margin-bottom: 20px;
   border-left: 2px solid #fdfdfd;
   list-style: none;
+  background-color: rgba(233, 233, 233, 0.1);
+  transition: all 0.3s ease;
+}
+
+#quotes li:hover {
+    background-color: rgba(233, 233, 233, 0.2); /* Slightly darker on hover */
+    border-left: 4px solid #fdfdfd; /* Thicker border */
+    transform: scale(1.05); /* Slight increase in size */
 }
 
 h1,h2 {
