@@ -154,6 +154,7 @@ p,li {
     align-items: center;
     padding-top: 60px; /* Adjusted for smaller screens */
     padding-left: 10px;
+    padding-bottom: 50px;
     gap: 0px; /* Smaller gap for a stacked layout */
     width: 300px;
     height: 100%;
