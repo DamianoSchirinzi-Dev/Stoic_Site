@@ -12,6 +12,18 @@ const stoics = [
       "Waste no more time arguing about what a good man should be. Be one.",
     ],
     info: "Marcus Aurelius was the son of the praetor Marcus Annius Verus and his wife, Domitia Calvilla. He was related through marriage to the emperors Trajan and Hadrian. Marcus's father died when he was three, and he was raised by his mother and paternal grandfather. After Hadrian's adoptive son, Aelius Caesar, died in 138, Hadrian adopted Marcus's uncle Antoninus Pius as his new heir. In turn, Antoninus adopted Marcus and Lucius, the son of Aelius. Hadrian died that year, and Antoninus became emperor. Now heir to the throne, Marcus studied Greek and Latin under tutors such as Herodes Atticus and Marcus Cornelius Fronto. He married Antoninus's daughter Faustina in 145.",
+    relativeCameraPos: [0, 1, 6],
+  },
+  {
+    name: "Chrysippus of Soli",
+    heading: "Disciple of Cleanthes",
+    quotes: [
+      "The universe itself is God and the universal outpouring of its soul.",
+      "Thought is the fountain of speech.",
+      "Living virtuously is equal to living in accordance with one’s experience of the actual course of nature.",
+    ],
+    info: "Chrysippus excelled in logic, the theory of knowledge, ethics, and physics. He created an original system of propositional logic in order to better understand the workings of the universe and role of humanity within it. He adhered to a fatalistic view of fate, but nevertheless sought a role for personal agency in thought and action. Ethics, he thought, depended on understanding the nature of the universe, and he taught a therapy of extirpating the unruly passions which depress and crush the soul.",
+    relativeCameraPos: [30, 0.5, 6],
   },
   {
     name: "Lucius Seneca",
@@ -22,7 +34,7 @@ const stoics = [
       "He who spares the wicked injures the good.",
     ],
     info: "Seneca was born in Corduba in Hispania, and raised in Rome, where he was trained in rhetoric and philosophy. His father was Seneca the Elder, his elder brother was Lucius Junius Gallio Annaeanus, and his nephew was the poet Lucan. In AD 41, Seneca was exiled to the island of Corsica under emperor Claudius,[2] but was allowed to return in 49 to become a tutor to Nero. When Nero became emperor in 54, Seneca became his advisor and, together with the praetorian prefect Sextus Afranius Burrus, provided competent government for the first five years of Nero's reign. Seneca's influence over Nero declined with time, and in 65 Seneca was forced to take his own life for alleged complicity in the Pisonian conspiracy to assassinate Nero, of which he was probably innocent.[3] His stoic and calm suicide has become the subject of numerous paintings.",
-    relativeCameraPos: [32, 0.5, -7],
+    relativeCameraPos: [-30, 0.5, 6],
   },
 ];
 
@@ -51,12 +63,37 @@ scene.add(directionalLight);
 
 //Models
 const gltfLoader = new GLTFLoader();
+
 let marcusBust = null;
 gltfLoader.load("models/ma_bust/scene.gltf", (gltf) => {
   marcusBust = gltf.scene;
   marcusBust.position.set(0, -0.4, 0);
 
   scene.add(marcusBust);
+
+  modelsLoaded++;
+  hideLoadingScreen();
+});
+
+let chrysipposBust = null;
+gltfLoader.load("models/chrysippos_bust/scene.gltf", (gltf) => {
+  chrysipposBust = gltf.scene;
+  chrysipposBust.scale.set(0.2, 0.2, 0.2);
+  chrysipposBust.position.set(30, -0.4, 0);
+
+  scene.add(chrysipposBust);
+
+  modelsLoaded++;
+  hideLoadingScreen();
+});
+
+let senecaBust = null;
+gltfLoader.load("models/seneca_bust/scene.gltf", (gltf) => {
+  senecaBust = gltf.scene;
+  senecaBust.scale.set(.5,.5,.5)
+  senecaBust.position.set(-30, -1, -1);
+
+  scene.add(senecaBust);
 
   modelsLoaded++;
   hideLoadingScreen();
@@ -109,6 +146,20 @@ renderer.setSize(sizes.width, sizes.height);
 renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 
 //#region Functions
+//Camera
+let isTransitioning = false;
+let transitionProgress = 0;
+const transitionDuration = 1; // Duration of the transition in seconds
+let transitionStartPos = new THREE.Vector3();
+let transitionEndPos = new THREE.Vector3();
+
+function repositionCamera(newX, newY, newZ) {
+  transitionStartPos.copy(camera.position);
+  transitionEndPos.set(newX, newY, newZ);
+  transitionProgress = 0;
+  isTransitioning = true;
+}
+
 document.addEventListener("DOMContentLoaded", function () {
   const menuToggle = document.getElementById("menu-toggle");
   const panels = document.getElementById("panels");
@@ -116,6 +167,7 @@ document.addEventListener("DOMContentLoaded", function () {
   menuToggle.addEventListener("click", function () {
     panels.classList.toggle("menu-visible");
     menuToggle.classList.toggle("visible");
+    menuToggle.classList.toggle("toggled");
   });
 });
 
@@ -131,7 +183,7 @@ document.getElementById("next-stoic-button").addEventListener("click", () => {
   window.scrollTo({
     top: 0,
     left: 0,
-    behavior: 'smooth'
+    behavior: "smooth",
   });
 });
 
@@ -150,13 +202,20 @@ function populateStoicInformation() {
 
   document.getElementById("stoic-information").textContent =
     stoics[currentStoic].info;
+
+  const newPos = new THREE.Vector3(
+    stoics[currentStoic].relativeCameraPos[0],
+    stoics[currentStoic].relativeCameraPos[1],
+    stoics[currentStoic].relativeCameraPos[2]
+  );
+  repositionCamera(newPos.x, newPos.y, newPos.z);
 }
 
 populateStoicInformation();
 
 // Handle Loading
 let modelsLoaded = 0;
-const totalModels = 1; // Set this to the number of models you are loading
+const totalModels = 2; // Set this to the number of models you are loading
 
 const hideLoadingScreen = () => {
   if (modelsLoaded === totalModels) {
@@ -181,10 +240,32 @@ const tick = () => {
   const deltaTime = elapsedTime - previousTime;
   previousTime = elapsedTime;
 
-  if (marcusBust) {
-    time += deltaTime;
+  // Handle camera transition
+  if (isTransitioning) {
+    transitionProgress += deltaTime / transitionDuration;
+    if (transitionProgress >= 1) {
+      isTransitioning = false;
+      transitionProgress = 1; // Ensure it does not exceed 1
+    }
+    camera.position.lerpVectors(transitionStartPos, transitionEndPos, transitionProgress);
+  }
 
+  time += deltaTime;
+
+  if (marcusBust) {
     marcusBust.rotation.y =
+      (Math.sin(time * modelRotationMultipler) * rotationRange) / 2;
+  }
+
+  if (senecaBust) {
+
+    senecaBust.rotation.y =
+      (Math.sin(time * modelRotationMultipler) * rotationRange) / 2;
+  }
+
+  if (chrysipposBust) {
+
+    chrysipposBust.rotation.y =
       (Math.sin(time * modelRotationMultipler) * rotationRange) / 2;
   }
 

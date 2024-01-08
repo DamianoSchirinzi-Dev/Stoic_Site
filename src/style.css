@@ -16,35 +16,39 @@ body {
 }
 
 #loading-screen {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: black;
-    color: white;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 24px;
-    z-index: 2000;
-    flex-direction: column;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: black;
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 24px;
+  z-index: 2000;
+  flex-direction: column;
+}
+
+.loader {
+  border: 5px solid #f3f3f3;
+  border-top: 5px solid rgb(255, 255, 129);
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  animation: spin 2s linear infinite;
+  margin-bottom: 20px;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
   }
-  
-  .loader {
-    border: 5px solid #f3f3f3;
-    border-top: 5px solid rgb(255, 255, 129);
-    border-radius: 50%;
-    width: 50px;
-    height: 50px;
-    animation: spin 2s linear infinite;
-    margin-bottom: 20px;
+  100% {
+    transform: rotate(360deg);
   }
-  
-  @keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
-  }
+}
 
 #panels {
   padding-top: 70px;
@@ -80,7 +84,7 @@ body {
   border: none; /* Remove default border */
   border-radius: 12px; /* High border-radius for pill shape */
   background-color: rgb(255, 255, 129); /* Example background color */
-  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+  font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
   color: rgb(0, 0, 0); /* Text color */
   font-size: larger;
   width: 200px;
@@ -92,7 +96,11 @@ body {
 }
 
 #info-section button:hover {
-  background-color: rgb(255, 255, 129); /* Darker shade on hover, adjust as needed */
+  background-color: rgb(
+    255,
+    255,
+    129
+  ); /* Darker shade on hover, adjust as needed */
   transform: scale(1.05); /* Slight increase in size */
 }
 
@@ -117,24 +125,26 @@ body {
 }
 
 #quotes li:hover {
-    background-color: rgba(233, 233, 233, 0.2); /* Slightly darker on hover */
-    border-left: 4px solid #fdfdfd; /* Thicker border */
-    transform: scale(1.05); /* Slight increase in size */
+  background-color: rgba(233, 233, 233, 0.2); /* Slightly darker on hover */
+  border-left: 4px solid #fdfdfd; /* Thicker border */
+  transform: scale(1.05); /* Slight increase in size */
 }
 
-h1,h2 {
-    color: rgb(255, 255, 129);
+h1,
+h2 {
+  color: rgb(255, 255, 129);
 }
 
-h1{
-    font-size: 40px;
+h1 {
+  font-size: 40px;
 }
 
-p,li {
-    color: rgb(235, 235, 235);
-    font-size: large;
-    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
-    line-height: 1.45;
+p,
+li {
+  color: rgb(235, 235, 235);
+  font-size: large;
+  font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
+  line-height: 1.45;
 }
 
 @media screen and (max-width: 1300px) {
@@ -142,9 +152,13 @@ p,li {
     position: fixed; /* Fixed position */
     top: 5%; /* Center vertically */
     left: 0; /* Stick to the left side of the screen */
+    font-size: 0; /* Remove any existing text */
+    width: 25px; /* Width of the button */
+    height: 30px; /* Height of the button */
+
     z-index: 1001; /* Ensure it's above other elements */
     transition: transform 0.3s ease;
-    padding: 10px;
+    padding: 22px 22px;
     background-color: rgb(255, 255, 129); /* Example background color */
 
     border: none; /* Remove default border */
@@ -153,8 +167,27 @@ p,li {
     outline: none; /* Remove default focus outline */
   }
 
+  #menu-toggle::before {
+    content: "";
+    display: block;
+    width: 10px; /* Width of the arrow */
+    height: 10px; /* Height of the arrow */
+    border-top: 3px solid black; /* Top part of the arrow */
+    border-right: 3px solid black; /* Right part of the arrow */
+    transform: rotate(45deg); /* Rotate to form an arrow */
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-top: -5px; /* Adjust these margins to center the arrow */
+    margin-left: -7px;
+  }
+
+  #menu-toggle.toggled::before {
+    transform: rotate(-135deg); /* Rotate the arrow to the opposite direction */
+  }
+
   #menu-toggle.visible {
-    transform: translateX(1119%);
+    transform: translateX(700%);
     transition: transform 0.3s ease;
   }
 
@@ -200,7 +233,7 @@ p,li {
   }
 
   #menu-toggle.visible {
-    transform: translateX(900%);
+    transform: translateX(570%);
     transition: transform 0.3s ease;
   }
 }
