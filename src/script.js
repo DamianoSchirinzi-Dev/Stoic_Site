@@ -61,6 +61,36 @@ directionalLight.shadow.camera.bottom = -7;
 directionalLight.position.set(5, 5, 5);
 scene.add(directionalLight);
 
+//Particles
+// Number of particles
+const particleCount = 2000;
+
+// Create particle geometry
+const particlesGeometry = new THREE.BufferGeometry();
+const positions = new Float32Array(particleCount * 3); // Each particle is a vertex (x, y, z)
+
+for (let i = 0; i < particleCount * 3; i++) {
+  // Random positions
+  positions[i] = (Math.random() - 0.5) * 100; // Spread particles over the scene
+}
+
+particlesGeometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+
+// Create particle material
+const particlesMaterial = new THREE.PointsMaterial({
+  size: 0.2, // Size of each particle
+  sizeAttenuation: true,
+  color: 0xffffff, // Color of particles
+  transparent: true,
+  opacity: 0.8
+});
+
+// Create particle mesh
+const particles = new THREE.Points(particlesGeometry, particlesMaterial);
+
+// Add particles to the scene
+scene.add(particles);
+
 //Models
 const gltfLoader = new GLTFLoader();
 
@@ -149,7 +179,7 @@ renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 //Camera
 let isTransitioning = false;
 let transitionProgress = 0;
-const transitionDuration = 1; // Duration of the transition in seconds
+const transitionDuration = .5; // Duration of the transition in seconds
 let transitionStartPos = new THREE.Vector3();
 let transitionEndPos = new THREE.Vector3();
 
@@ -178,6 +208,8 @@ document.getElementById("next-stoic-button").addEventListener("click", () => {
   if (currentStoic > stoics.length - 1) {
     currentStoic = 0;
   }
+
+  console.log(currentStoic);
 
   populateStoicInformation();
   window.scrollTo({
@@ -215,7 +247,7 @@ populateStoicInformation();
 
 // Handle Loading
 let modelsLoaded = 0;
-const totalModels = 2; // Set this to the number of models you are loading
+const totalModels = 3; // Set this to the number of models you are loading
 
 const hideLoadingScreen = () => {
   if (modelsLoaded === totalModels) {
@@ -240,6 +272,10 @@ const tick = () => {
   const deltaTime = elapsedTime - previousTime;
   previousTime = elapsedTime;
 
+  //Update Particles
+  particles.rotation.x += 0.00014;
+  particles.rotation.y += 0.00014;
+
   // Handle camera transition
   if (isTransitioning) {
     transitionProgress += deltaTime / transitionDuration;
@@ -254,7 +290,7 @@ const tick = () => {
 
   if (marcusBust) {
     marcusBust.rotation.y =
-      (Math.sin(time * modelRotationMultipler) * rotationRange) / 2;
+      (Math.sin(time * modelRotationMultipler) * rotationRange) / 1.6;
   }
 
   if (senecaBust) {
@@ -266,7 +302,7 @@ const tick = () => {
   if (chrysipposBust) {
 
     chrysipposBust.rotation.y =
-      (Math.sin(time * modelRotationMultipler) * rotationRange) / 2;
+      (Math.sin(time * modelRotationMultipler) * rotationRange) / 1.8;
   }
 
   // Render
