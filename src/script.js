@@ -10,6 +10,9 @@ const stoics = [
       "You have power over your mind — not outside events. Realize this, and you will find strength.",
       "The happiness of your life depends upon the quality of your thoughts.",
       "Waste no more time arguing about what a good man should be. Be one.",
+      "The soul becomes dyed with the color of its thoughts.",
+      "Accept the things to which fate binds you, and love the people with whom fate brings you together, but do so with all your heart.",
+      "If you are distressed by anything external, the pain is not due to the thing itself, but to your estimate of it; and this you have the power to revoke at any moment."
     ],
     info: "Marcus Aurelius was the son of the praetor Marcus Annius Verus and his wife, Domitia Calvilla. He was related through marriage to the emperors Trajan and Hadrian. Marcus's father died when he was three, and he was raised by his mother and paternal grandfather. After Hadrian's adoptive son, Aelius Caesar, died in 138, Hadrian adopted Marcus's uncle Antoninus Pius as his new heir. In turn, Antoninus adopted Marcus and Lucius, the son of Aelius. Hadrian died that year, and Antoninus became emperor. Now heir to the throne, Marcus studied Greek and Latin under tutors such as Herodes Atticus and Marcus Cornelius Fronto. He married Antoninus's daughter Faustina in 145.",
     relativeCameraPos: [0, 1, 6],
@@ -21,6 +24,8 @@ const stoics = [
       "The universe itself is God and the universal outpouring of its soul.",
       "Thought is the fountain of speech.",
       "Living virtuously is equal to living in accordance with one’s experience of the actual course of nature.",
+      "There could be no justice, unless there were also injustice; no courage, unless there were cowardice; no truth, unless there were falsehood",
+      "If I had followed the multitude, I should not have studied philosophy",
     ],
     info: "Chrysippus excelled in logic, the theory of knowledge, ethics, and physics. He created an original system of propositional logic in order to better understand the workings of the universe and role of humanity within it. He adhered to a fatalistic view of fate, but nevertheless sought a role for personal agency in thought and action. Ethics, he thought, depended on understanding the nature of the universe, and he taught a therapy of extirpating the unruly passions which depress and crush the soul.",
     relativeCameraPos: [30, 0.5, 6],
@@ -32,6 +37,9 @@ const stoics = [
       "I am not born for one corner; the whole world is my native land.",
       "Regard a friend as loyal, and you will make him loyal.",
       "He who spares the wicked injures the good.",
+      "We suffer more often in imagination than in reality",
+      "All cruelty springs from weakness.",
+      "Difficulties strengthen the mind, as labor does the body."
     ],
     info: "Seneca was born in Corduba in Hispania, and raised in Rome, where he was trained in rhetoric and philosophy. His father was Seneca the Elder, his elder brother was Lucius Junius Gallio Annaeanus, and his nephew was the poet Lucan. In AD 41, Seneca was exiled to the island of Corsica under emperor Claudius,[2] but was allowed to return in 49 to become a tutor to Nero. When Nero became emperor in 54, Seneca became his advisor and, together with the praetorian prefect Sextus Afranius Burrus, provided competent government for the first five years of Nero's reign. Seneca's influence over Nero declined with time, and in 65 Seneca was forced to take his own life for alleged complicity in the Pisonian conspiracy to assassinate Nero, of which he was probably innocent.[3] His stoic and calm suicide has become the subject of numerous paintings.",
     relativeCameraPos: [-30, 0.5, 6],
@@ -63,15 +71,31 @@ scene.add(directionalLight);
 
 //Particles
 // Number of particles
-const particleCount = 2000;
+const particleCount = 3000;
 
 // Create particle geometry
 const particlesGeometry = new THREE.BufferGeometry();
 const positions = new Float32Array(particleCount * 3); // Each particle is a vertex (x, y, z)
 
 for (let i = 0; i < particleCount * 3; i++) {
-  // Random positions
-  positions[i] = (Math.random() - 0.5) * 100; // Spread particles over the scene
+  
+   // Random positions with a minimum distance from the origin
+   let radius = 80; // Minimum distance from the origin
+   let x = (Math.random() - 0.5) * 100;
+   let y = (Math.random() - 0.5) * 100;
+   let z = (Math.random() - 0.5) * 100;
+
+   let distance = Math.sqrt(x * x + y * y + z * z);
+   if (distance < radius) {
+       let scaleFactor = radius / distance;
+       x *= scaleFactor;
+       y *= scaleFactor;
+       z *= scaleFactor;
+   }
+
+   positions[i] = x;
+   positions[i + 1] = y;
+   positions[i + 2] = z;
 }
 
 particlesGeometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
@@ -82,7 +106,8 @@ const particlesMaterial = new THREE.PointsMaterial({
   sizeAttenuation: true,
   color: 0xffffff, // Color of particles
   transparent: true,
-  opacity: 0.8
+  opacity: 0.8,
+  depthTest: true
 });
 
 // Create particle mesh
@@ -97,7 +122,7 @@ const gltfLoader = new GLTFLoader();
 let marcusBust = null;
 gltfLoader.load("models/ma_bust/scene.gltf", (gltf) => {
   marcusBust = gltf.scene;
-  marcusBust.position.set(0, -0.4, 0);
+  marcusBust.position.set(.2, -0.4, 0);
 
   scene.add(marcusBust);
 
@@ -108,8 +133,8 @@ gltfLoader.load("models/ma_bust/scene.gltf", (gltf) => {
 let chrysipposBust = null;
 gltfLoader.load("models/chrysippos_bust/scene.gltf", (gltf) => {
   chrysipposBust = gltf.scene;
-  chrysipposBust.scale.set(0.2, 0.2, 0.2);
-  chrysipposBust.position.set(30, -0.4, 0);
+  chrysipposBust.scale.set(0.32, 0.32, 0.32);
+  chrysipposBust.position.set(30.2, -1.6, -4);
 
   scene.add(chrysipposBust);
 
@@ -121,7 +146,7 @@ let senecaBust = null;
 gltfLoader.load("models/seneca_bust/scene.gltf", (gltf) => {
   senecaBust = gltf.scene;
   senecaBust.scale.set(.5,.5,.5)
-  senecaBust.position.set(-30, -1, -1);
+  senecaBust.position.set(-29.8, -1.5, -2);
 
   scene.add(senecaBust);
 
@@ -219,6 +244,17 @@ document.getElementById("next-stoic-button").addEventListener("click", () => {
   });
 });
 
+function shuffleArray(array) {
+  for (let i = array.length - 1; i > 0; i--) {
+      // Generate a random index from 0 to i
+      let j = Math.floor(Math.random() * (i + 1));
+
+      // Swap elements at indices i and j
+      [array[i], array[j]] = [array[j], array[i]];
+  }
+  return array;
+}
+
 function populateStoicInformation() {
   document.getElementById("stoic-name").textContent = stoics[currentStoic].name;
   document.getElementById("stoic-heading").textContent =
@@ -226,7 +262,10 @@ function populateStoicInformation() {
 
   const quotesList = document.getElementById("quotes");
   quotesList.innerHTML = "";
-  stoics[currentStoic].quotes.forEach((quote) => {
+
+  shuffleArray(stoics[currentStoic].quotes);
+
+  stoics[currentStoic].quotes.slice(0, 3).forEach((quote) => {
     const li = document.createElement("li");
     li.textContent = quote;
     quotesList.appendChild(li);

@@ -233,7 +233,7 @@ li {
   }
 
   #menu-toggle.visible {
-    transform: translateX(570%);
+    transform: translateX(565%);
     transition: transform 0.3s ease;
   }
 }
