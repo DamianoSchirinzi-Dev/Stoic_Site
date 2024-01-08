@@ -1,50 +1,6 @@
 import * as THREE from "three";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
-
-//Data
-const stoics = [
-  {
-    name: "Marcus Aurelius",
-    heading: "Roman Emperor & Stoic Philosopher",
-    quotes: [
-      "You have power over your mind — not outside events. Realize this, and you will find strength.",
-      "The happiness of your life depends upon the quality of your thoughts.",
-      "Waste no more time arguing about what a good man should be. Be one.",
-      "The soul becomes dyed with the color of its thoughts.",
-      "Accept the things to which fate binds you, and love the people with whom fate brings you together, but do so with all your heart.",
-      "If you are distressed by anything external, the pain is not due to the thing itself, but to your estimate of it; and this you have the power to revoke at any moment."
-    ],
-    info: "Marcus Aurelius was the son of the praetor Marcus Annius Verus and his wife, Domitia Calvilla. He was related through marriage to the emperors Trajan and Hadrian. Marcus's father died when he was three, and he was raised by his mother and paternal grandfather. After Hadrian's adoptive son, Aelius Caesar, died in 138, Hadrian adopted Marcus's uncle Antoninus Pius as his new heir. In turn, Antoninus adopted Marcus and Lucius, the son of Aelius. Hadrian died that year, and Antoninus became emperor. Now heir to the throne, Marcus studied Greek and Latin under tutors such as Herodes Atticus and Marcus Cornelius Fronto. He married Antoninus's daughter Faustina in 145.",
-    relativeCameraPos: [0, 1, 6],
-  },
-  {
-    name: "Chrysippus of Soli",
-    heading: "Disciple of Cleanthes",
-    quotes: [
-      "The universe itself is God and the universal outpouring of its soul.",
-      "Thought is the fountain of speech.",
-      "Living virtuously is equal to living in accordance with one’s experience of the actual course of nature.",
-      "There could be no justice, unless there were also injustice; no courage, unless there were cowardice; no truth, unless there were falsehood",
-      "If I had followed the multitude, I should not have studied philosophy",
-    ],
-    info: "Chrysippus excelled in logic, the theory of knowledge, ethics, and physics. He created an original system of propositional logic in order to better understand the workings of the universe and role of humanity within it. He adhered to a fatalistic view of fate, but nevertheless sought a role for personal agency in thought and action. Ethics, he thought, depended on understanding the nature of the universe, and he taught a therapy of extirpating the unruly passions which depress and crush the soul.",
-    relativeCameraPos: [30, 0.5, 6],
-  },
-  {
-    name: "Lucius Seneca",
-    heading: "Statesman, dramatist & satirist",
-    quotes: [
-      "I am not born for one corner; the whole world is my native land.",
-      "Regard a friend as loyal, and you will make him loyal.",
-      "He who spares the wicked injures the good.",
-      "We suffer more often in imagination than in reality",
-      "All cruelty springs from weakness.",
-      "Difficulties strengthen the mind, as labor does the body."
-    ],
-    info: "Seneca was born in Corduba in Hispania, and raised in Rome, where he was trained in rhetoric and philosophy. His father was Seneca the Elder, his elder brother was Lucius Junius Gallio Annaeanus, and his nephew was the poet Lucan. In AD 41, Seneca was exiled to the island of Corsica under emperor Claudius,[2] but was allowed to return in 49 to become a tutor to Nero. When Nero became emperor in 54, Seneca became his advisor and, together with the praetorian prefect Sextus Afranius Burrus, provided competent government for the first five years of Nero's reign. Seneca's influence over Nero declined with time, and in 65 Seneca was forced to take his own life for alleged complicity in the Pisonian conspiracy to assassinate Nero, of which he was probably innocent.[3] His stoic and calm suicide has become the subject of numerous paintings.",
-    relativeCameraPos: [-30, 0.5, 6],
-  },
-];
+import {stoics} from "./data.js";
 
 // Canvas
 const canvas = document.querySelector("canvas.webgl");
